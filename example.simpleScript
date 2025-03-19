@@ -1,0 +1,6 @@
+print Hello World
+add 5 3
+print result
+subtract 2 1
+print result
+exit
