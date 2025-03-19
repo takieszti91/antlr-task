@@ -1,0 +1,6 @@
+print Helloadd World
+add 5 3
+print result
+subtract 5 number
+print result
+exit

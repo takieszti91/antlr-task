@@ -4,6 +4,7 @@ import org.interview.SimpleScriptBaseVisitor;
 import org.interview.SimpleScriptParser;
 
 public class AntlrToCommand extends SimpleScriptBaseVisitor<Command> {
+    public static final String WARNING_ONLY_NUMBERS_ARE_ALLOWED = "Warning: Only numbers are allowed for addition and subtraction!";
     String lastResult = "";
 
     @Override
@@ -18,16 +19,26 @@ public class AntlrToCommand extends SimpleScriptBaseVisitor<Command> {
 
     @Override
     public Command visitAddition(SimpleScriptParser.AdditionContext ctx) {
-        Addition sum = new Addition(Integer.valueOf(ctx.getChild(1).toString()), Integer.valueOf(ctx.getChild(2).toString()));
-        this.lastResult = sum.toString();
+        Addition sum;
+        try {
+            sum = new Addition(Integer.parseInt(ctx.getChild(1).toString()), Integer.parseInt(ctx.getChild(2).toString()));
+            this.lastResult = sum.toString();
+        } catch (NumberFormatException e) {
+            sum = new Addition(WARNING_ONLY_NUMBERS_ARE_ALLOWED);
+        }
         return sum;
     }
 
     @Override
     public Command visitSubtraction(SimpleScriptParser.SubtractionContext ctx) {
-        Subraction subraction = new Subraction(Integer.valueOf(ctx.getChild(1).toString()), Integer.valueOf(ctx.getChild(2).toString()));
-        this.lastResult = subraction.toString();
-        return subraction;
+        Subtraction subtraction;
+        try {
+            subtraction = new Subtraction(Integer.parseInt(ctx.getChild(1).toString()), Integer.parseInt(ctx.getChild(2).toString()));
+            this.lastResult = subtraction.toString();
+        } catch (NumberFormatException e){
+            subtraction = new Subtraction(WARNING_ONLY_NUMBERS_ARE_ALLOWED);
+        }
+        return subtraction;
     }
 
     @Override
